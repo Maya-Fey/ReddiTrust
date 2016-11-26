@@ -1,0 +1,9 @@
+There are two purposes of ReddiTrust, to sign messages and to verify messages. 
+
+To verify messages, you must first have the user's public key. This can be imported using the import button.
+
+Once imported, all messages that can be verified using that key will be automatically checked.
+
+To sign messages, you must first create your own key. Generate entropy via keyboard mashing with the collect entropy button. For optimal results, do actual keyboard mashing and no predicatble patterns (ie: 12345...). Select a key type (right now only various lengths of RSA are supported) and hit generate, select a name and your key will be created. Now you can sign messages by clicking the sign button on the bottom of your posts.
+
+For others to verify your messages, you must export your public key (use the export button on the key management section), and post it somewhere trusted. From there, other users can add it to their respective public-key registries and thus verify your messages as described above.

@@ -1,0 +1,9 @@
+To install the TRC CounterIntelligence Suite:
+
+	1. Find the release you want under releases. Choosing the latest is recommended
+	2. Copy the full text of the release you choose. It should be quite long and start with 'javascript:' (minus quotes)
+	3. Create a new bookmark on your browser, call it ReddiTrust
+	4. Under where the URL is supposed to be, paste the code you copied earlier
+	5: Finish Bookmark
+
+To activate the ReddiTrust bookmarklet, simply activate the bookmark on any reddit page.
