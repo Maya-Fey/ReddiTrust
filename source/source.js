@@ -2598,6 +2598,7 @@ function removeKey(key)
 	keykeys.splice(index, 1);
 	keytypes.splice(index, 1);
 	keyvalues.splice(index, 1);
+	saveKeyDB();
 }
 
 function exportKeyPublic(name)
