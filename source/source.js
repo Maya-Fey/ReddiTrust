@@ -2744,11 +2744,6 @@ function getEntropy(text)
 
 resetEntropy();
 
-function parseKeyFull(get, user)
-{
-	parseKeyFull(get, user, true);
-}
-
 function parseKeyFull(get, user, update)
 {
 	var strs = get.split("%%");
@@ -2803,14 +2798,14 @@ function parseKeyFull(get, user, update)
 function importKey()
 {
 	var user = prompt("What username does the key belong to?");
-	if(user == null || name == "")
+	if(user == null || user == "")
 		return;
 	var get = prompt("Enter key information here");
 	if(get == null || get == "" || get.length > 10000) {
 		output("Failed to import key, invalid or null input\n");
 		return;
 	}
-	parseKeyFull(get, user);
+	parseKeyFull(get, user, true);
 }
 
 var keyselect = document.createElement("select");
