@@ -1,5 +1,5 @@
 if(document.__redditrust_active) {
-	alert("ReddiTrust is already active");
+	updateUIFull();
 	ladder(stepladder);
 }
 document.__redditrust_active = true;
