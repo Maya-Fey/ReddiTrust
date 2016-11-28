@@ -1,0 +1,9 @@
+Changelog
+
+Bugfix:
+	- Fixed failed check on import private key which caused an error
+	- Took the time to understand javascript function overloading - fixed bug where importing private key would not update dropdown
+
+Behavior:
+	- DB now saves on private key removal
+	- When you run the bookmarklet on a page that posesses it already, it updates the UI of that page.
