@@ -2544,7 +2544,7 @@ function newKey()
 			return;
 	}
 	addKey(name, type, n);
-	addPKey(user + ":" + name, type, n);
+	addPKey(user + ":" + name, type, n, true);
 	output("Generated new key of type " + keytypenames[type] + " using " + bits + " bits of entropy.\n");
 	updateKeySelect();
 	updatePKeySelect();
@@ -2789,7 +2789,7 @@ function parseKeyFull(get, user, update)
 	if(update)
 		updateKeySelect();
 	if(user != null) {
-		addPKey(user + ":" + name, type, key);
+		addPKey(user + ":" + name, type, key, true);
 		if(update) 
 			updatePKeySelect();
 	}	
@@ -2862,14 +2862,6 @@ function addPKey(key, type, value, save)
 		savePKeyDB();
 }
 
-function addPKey(key, type, value)
-{
-	pkeykeys.push(key);
-	pkeytypes.push(type);
-	pkeyvalues.push(value);
-	savePKeyDB();
-}
-
 function getPKeyIndex(key)
 {
 	for(var i = 0; i < pkeykeys.length; i++)
@@ -2910,9 +2902,9 @@ function loadPKeyDB()
 function savePKeyDB()
 {
 	var str = "";
-	if(keykeys.length > 0)
+	if(pkeykeys.length > 0)
 		str = exportPKeyInt(0);
-	for(var i = 1; i < keykeys.length; i++) {
+	for(var i = 1; i < pkeykeys.length; i++) {
 		var key = exportPKeyInt(i);
 		if(key != -1)
 			str += "%==%" + key;
@@ -3117,7 +3109,7 @@ function importPKey()
 		alert("An unexpected failure occurred");
 		return;
 	}
-	addPKey(name, type, key);
+	addPKey(name, type, key, true);
 	output("Successfully imported public key of name " + name + "\n");
 	updatePKeySelect();
 }
