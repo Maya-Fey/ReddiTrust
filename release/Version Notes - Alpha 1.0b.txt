@@ -1,0 +1,5 @@
+Changelog
+
+Bugfix:
+	- Fixed public key import bug
+	- Fixed one-in-16 signing bug
