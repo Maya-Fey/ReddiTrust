@@ -3290,6 +3290,21 @@ function strip_newlines(text)
 	return text.substring(0, pos + 1);
 }
 
+function removeAttributes(thing)
+{
+	var attributes = [];
+	for(var i = 0; i < thing.attributes.length; i++)
+		if(thing.attributes[i].name != undefined)
+			attributes.push(thing.attributes[i].name.toLowerCase());
+	for(var i = 0; i < attributes.length; i++)
+		if(attributes[i] != "href")
+			thing.removeAttribute(attributes[i]);
+	var children = thing.childNodes;
+	for(var i = 0; i < children.length; i++)
+		if(children[i].nodeType == 1)
+			removeAttributes(children[i]);
+}
+
 function updateVerify()
 {
 	var comments = document.getElementsByClassName("usertext-body");
@@ -3310,7 +3325,7 @@ function updateVerify()
 			continue;
 		}
 		var span = authortag.nextSibling;
-		if((span == null || span.noteType != 1) || span.getAttribute("name") != "__redditrust_verispan") {
+		if((span == null || span.nodeType != 1) || span.getAttribute("name") != "__redditrust_verispan") {
 			span = document.createElement("span");
 			span.setAttribute("name", "__redditrust_verispan");
 			authortag.insertAdjacentElement("afterEnd", span);
@@ -3323,6 +3338,9 @@ function updateVerify()
 			md.removeChild(md.childNodes[md.childNodes.length - 1]);
 			md.removeChild(md.childNodes[md.childNodes.length - 1]);
 			md.innerHTML = strip_newlines(md.innerHTML);
+			for(var j = 0; j < md.childNodes.length; j++)
+				if(md.childNodes[j].nodeType == 1)
+					removeAttributes(md.childNodes[j]);
 			var verify = verify_sig(sig, root.getAttribute("data-fullname") + md.innerHTML);
 			md.parentNode.setAttribute("style", "");
 			var extra = md.nextSibling;
@@ -3507,6 +3525,9 @@ function sign(fid)
 			}
 			md.value = strip_newlines(ht.substring(0, start));
 		}
+	for(var i = 0; i < text.childNodes.length; i++)
+		if(text.childNodes[i].nodeType == 1)
+			removeAttributes(text.childNodes[i]);
 	text = strip_newlines(text.innerHTML);
 	var kind = getKeyIndex(keykeys[keyselect.value]);
 	if(kind == -1) {
