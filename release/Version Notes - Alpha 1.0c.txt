@@ -1,0 +1,4 @@
+Changelog
+
+Bugfix:
+	- Fixed some signatures not verifying in chrome

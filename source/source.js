@@ -2708,7 +2708,7 @@ t.appendChild(t2);
 t = ce("td");
 t2.appendChild(t);
 t.setAttribute("style", "padding: 10px; text-align: center; width: 100%");
-t.innerHTML = 'ReddiTrust version Alpha 1.0b - created by <a href="https://www.reddit.com/user/MayaFey_/">/u/MayaFey_</a>';
+t.innerHTML = 'ReddiTrust version Alpha 1.0c - created by <a href="https://www.reddit.com/user/MayaFey_/">/u/MayaFey_</a>';
 t = document.createElement("div");
 t.setAttribute("style", "box-sizing: border-box; border: 15px solid white; width: 100%");
 out.setAttribute("style", "width: 100%; min-height: 2em");
