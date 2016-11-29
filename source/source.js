@@ -1749,12 +1749,21 @@ function RSASign(x)
 
 function RSAVerify(s, m)
 {
+	m = strip_leading_zeroes(m);
 	s = new BigInteger(s, 16);
 	s = s.modPowInt(this.e, this.n);
 	var str1 = s.toString(16);
 	var str2 = m.substring(0, str1.length);
 	str1 = str1.substring(0, str2.length);
 	return str1 === str2;
+}
+
+function strip_leading_zeroes(arg)
+{
+	var i = 0;
+	while(arg.charAt(i) == "0")
+		i++;
+	return arg.substring(i, arg.length);
 }
 
 function RSADecrypt(ctext) {
@@ -1767,12 +1776,12 @@ function RSADecrypt(ctext) {
 
 function RSAExportPublic()
 {
-	return hex2b64(this.n.toString(16)) + "|" + hex2b64(this.e.toString(16));
+	return hex2b64safe(this.n.toString(16)) + "|" + hex2b64safe(this.e.toString(16));
 }
 
 function RSAExportFull()
 {
-	return hex2b64(this.n.toString(16)) + "|" + hex2b64(this.e.toString(16)) + "|" + hex2b64(this.d.toString(16));
+	return hex2b64safe(this.n.toString(16)) + "|" + hex2b64safe(this.e.toString(16)) + "|" + hex2b64safe(this.d.toString(16));
 }
 
 RSAKey.prototype.doPrivate = RSADoPrivate;
@@ -2392,6 +2401,17 @@ function prng_newstate() {
 var rng_psize = 256;
 var b64map="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 var b64padchar="=";
+
+function hex2b64safe(orig)
+{
+	var h = orig;
+	while(true) {
+		var b64 = hex2b64(h);
+		if(strip_leading_zeroes(b64tohex(b64)) == orig)
+			return b64;
+		h = "0" + h;
+	}
+}
 
 function hex2b64(h) {
 	var i;
@@ -3437,7 +3457,7 @@ function sign_with_key(text, key, name, type)
 			output("An unexpected failure occurred while signing with key of type " + keytypenames[type]);
 			return -1;
 	}
-	sig = hex2b64(sig);
+	sig = hex2b64safe(sig);
 	return keymvers[type] + "%%" + type + "%%" + name + "%%" + sig;
 }
 
@@ -3482,11 +3502,10 @@ function sign(fid)
 					suc = 0;
 				}
 				if(suc == 5) {
-					start -= 2;
 					break;
 				}
 			}
-			md.value = ht.substring(0, start);
+			md.value = strip_newlines(ht.substring(0, start));
 		}
 	text = strip_newlines(text.innerHTML);
 	var kind = getKeyIndex(keykeys[keyselect.value]);
