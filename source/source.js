@@ -3353,6 +3353,7 @@ function updateVerify()
 			{
 				case true:
 					span.setAttribute("style", "border: 1px solid white; background-color: green; padding: 2px; color: white;");
+					span.setAttribute("title", "Verified using " + keytypenames[sig.type] + ":SHA-512")
 					span.innerHTML = "[VERIFIED]";
 					extra.innerHTML = "";
 					break;
