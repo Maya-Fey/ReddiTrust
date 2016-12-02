@@ -3170,6 +3170,7 @@ var cur = nMLn("Generate Keys");
 
 t = document.createElement("b");
 t.appendChild(document.createTextNode("Generate Keys:"));
+t.setAttribute("style", "text-decoration: underline;");
 cur.appendChild(t);
 cur.appendChild(gbreak());
 
@@ -3193,10 +3194,11 @@ t.setAttribute("onclick", "newKey()");
 cur.appendChild(t);
 cur.appendChild(gbreak());
 
-var cur = nMLn("Manage Keys");
+cur = nMLn("Manage Keys");
 
 t = document.createElement("b");
 t.appendChild(document.createTextNode("Manage Keys:"));
+t.setAttribute("style", "text-decoration: underline;");
 cur.appendChild(t);
 cur.appendChild(gbreak());
 cur.appendChild(keyselect);
@@ -3221,10 +3223,11 @@ t.innerHTML = "Export Private";
 t.setAttribute("onclick", "exportFullKey()");
 cur.appendChild(t);
 
-var cur = nMLn("Manage Trust");
+cur = nMLn("Manage Trust");
 
 t = document.createElement("b");
 t.appendChild(document.createTextNode("Manage Trust:"));
+t.setAttribute("style", "text-decoration: underline;");
 cur.appendChild(t);
 cur.appendChild(gbreak());
 cur.appendChild(pubkeyselect);
@@ -3253,6 +3256,26 @@ t = document.createElement("button");
 t.innerHTML = "Export Many";
 t.setAttribute("onclick", "exportManyPub()");
 cur.appendChild(t);
+
+cur = nMLn("Settings");
+
+var sigmethod = document.createElement("select");
+sigmethod.appendChild(noption(0, "Standard"));
+sigmethod.appendChild(noption(1, "Superscript (obnoxious, fails on mobile)"));
+sigmethod.appendChild(noption(2, "Linked (may be considered spam)"));
+sigmethod.appendChild(noption(3, "Invisible (fails on mobile)"));
+
+t = document.createElement("b");
+t.appendChild(document.createTextNode("Settings:"));
+t.setAttribute("style", "text-decoration: underline;");
+cur.appendChild(t);
+cur.appendChild(glbreak());
+
+t = document.createElement("b");
+t.appendChild(document.createTextNode("Signature Method:"));
+cur.appendChild(t);
+cur.appendChild(gbreak());
+cur.appendChild(sigmethod);
 
 updateMenu();
 
@@ -3501,7 +3524,18 @@ function sign_with_key(text, key, name, type)
 			return -1;
 	}
 	sig = hex2b64safe(sig);
-	return keymvers[type] + "%%" + type + "%%" + name + "%%" + sig;
+	sig = keymvers[type] + "%%" + type + "%%" + name + "%%" + sig;
+	switch(sigmethod.value)
+	{
+		case "0":
+			return "\n\nSigned with ReddiTrust 1.0c, using " + keytypenames[type] + "\\SHA-512[.](#" + sig + ")";
+		case "1":
+			return "\n\n^^^^^" + sig;
+		case "2":
+			return "\n\nSigned with [ReddiTrust 1.0c](https://github.com/MayaFeyIntensifies/ReddiTrust/releases/tag/vA1.0c), using " + keytypenames[type] + "\\SHA-512[.](#" + sig + ")";
+		case "3":
+			return "[](#" + sig + ")";
+	}
 }
 
 function updateMores()
@@ -3564,7 +3598,7 @@ function sign(fid)
 	var type = getKeyType(kind);
 	sig = sign_with_key(hex_sha512(form.parentNode.parentNode.getAttribute("data-fullname") + text), key, keykeys[keyselect.value], type);
 	if(sig != -1) {
-		md.value += "\n\n^^^^^" + sig;
+		md.value += sig;
 		form.onsubmit();
 		updateUIFull()
 	} 
