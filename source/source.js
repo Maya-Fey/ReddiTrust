@@ -2563,9 +2563,9 @@ function newKey()
 		default:
 			return;
 	}
-	addKey(name, type, n);
-	addPKey(user + ":" + name, type, n, true);
 	output("Generated new key of type " + keytypenames[type] + " using " + bits + " bits of entropy.\n");
+	addKey(name, type, n, true);
+	addPKey(user + ":" + name, type, n, true);
 	updateKeySelect();
 	updatePKeySelect();
 	resetEntropy();
@@ -2582,14 +2582,6 @@ function addKey(key, type, value, save)
 	keyvalues.push(value);
 	if(save)
 		saveKeyDB();
-}
-
-function addKey(key, type, value)
-{
-	keykeys.push(key);
-	keytypes.push(type);
-	keyvalues.push(value);
-	saveKeyDB();
 }
 
 function getKeyIndex(key)
@@ -2755,6 +2747,7 @@ function resetEntropy()
 function addEntropy(stuff, approxbits)
 {
 	entropy += stuff;
+	output("Absorbed " + approxbits + " worth of entropy, new internal state: " + hex_sha512(entropy));
 	bitcounter.innerHTML = "Bits: " + (bits += approxbits);
 }
 
@@ -2808,7 +2801,7 @@ function parseKeyFull(get, user, update)
 		alert("An unexpected failure occurred");
 		return;
 	}
-	output("Successfully imported key of name " + name + "\n");
+	output("Successfully imported key of name " + name + "[" + keytypenames[type] + "]\n");
 	addKey(name, type, key, update);
 	if(update)
 		updateKeySelect();
@@ -3027,7 +3020,7 @@ function importPKeyInt(str)
 		return;
 	}
 	addPKey(name, type, key, false);
-	output("Successfully imported public key of name " + name + "\n");
+	output("Successfully imported public key of name " + name + "[" + keytypenames[type] + "]\n");
 }
 
 function updatePKeySelect()
@@ -3473,10 +3466,15 @@ function verify_sig(sig, message)
 		case "5":
 		case "6":
 		case "7":
+			
 			verified = key.verify(b64tohex(sig.sig), hex_sha512(message));
+			if(verified)
+				output("Successfully verified signature of type " + keytypenames[sig.type] + "\n");
+			else
+				output("Failed to verify signature of type " + keytypenames[sig.type] + "\nMessage Digest: " + hex_sha512(message) + "\nSignature: " + b64tohex(sig.sig) + "\n");
 			break;
 		default:
-			output("Failed to verify signature of unknown type " + sig.type);
+			output("Failed to verify signature of unknown type " + sig.type + "\nMessage Digest: " + hex_sha512(message) + "\nSignature: " + b64tohex(sig.sig) + "\n");
 			return -3;
 	}
 	return verified;
@@ -3496,6 +3494,7 @@ function sign_with_key(text, key, name, type)
 		case "6":
 		case "7":
 			sig = key.sign(text).toString(16);
+			output("Successfully created signature of type " + keytypenames[type] + " with key " + key + " for user " + name);
 			break;
 		default:
 			output("An unexpected failure occurred while signing with key of type " + keytypenames[type]);
@@ -3523,6 +3522,7 @@ function updateUIFull()
 	updateEdits();
 	updateVerify();
 	updateMores();
+	output("Successfully updated UI\n");
 }
 
 function sign(fid)
