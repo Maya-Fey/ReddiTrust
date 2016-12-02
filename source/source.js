@@ -3164,6 +3164,11 @@ topp.appendChild(gbreak());
 topp.appendChild(toggleout);
 topp.appendChild(gbreak());
 topp.appendChild(menuselect);
+topp.appendChild(gbreak());
+var t = document.createElement("button");
+t.innerHTML = "Update UI";
+t.setAttribute("onclick", "updateUIFull();");
+topp.appendChild(t);
 topp.setAttribute("style", "text-align: center; padding: 5px;");
 
 var cur = nMLn("Generate Keys");
