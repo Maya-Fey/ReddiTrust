@@ -3575,7 +3575,7 @@ function sign(fid)
 	var form = document.getElementById(fid);
 	var author = form.parentNode.parentNode.getAttribute("data-author");
 	var text = form.getElementsByClassName("usertext-body")[0].childNodes[0];
-	var md = form.getElementsByClassName("usertext-edit")[0].childNodes[0].childNodes[0];
+	var md = form.getElementsByClassName("usertext-edit")[0].getElementsByClassName("md")[0].getElementsByTagName("textarea")[0];
 	md.value = strip_newlines(md.value);
 	if(text.getAttribute("__redditrust_has_signature") == "true")
 		if(!confirm("You already have a signature on that post, do you wish to overwrite?"))
