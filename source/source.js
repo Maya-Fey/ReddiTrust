@@ -3434,39 +3434,49 @@ function getSignature(ele, uid)
 	var last = ele.childNodes[ele.childNodes.length - 2];
 	if(last.tagName != "P")
 		return -1;
-	if(last.childNodes.length != 1)
-		return -1;
-	last = last.childNodes[0];
-	if(last.tagName != "SUP")
-		return -1;
-	if(last.childNodes.length != 1)
-		return -1;
-	last = last.childNodes[0];
-	if(last.tagName != "SUP")
-		return -1;
-	if(last.childNodes.length != 1)
-		return -1;
-	last = last.childNodes[0];
-	if(last.tagName != "SUP")
-		return -1;
-	if(last.childNodes.length != 1)
-		return -1;
-	last = last.childNodes[0];
-	if(last.tagName != "SUP")
-		return -1;
-	if(last.childNodes.length != 1)
-		return -1;
-	last = last.childNodes[0];
-	if(last.tagName != "SUP")
-		return -1;
-	var sig = last.innerHTML;
-	if(sig.length > 2000)
-		return -1;
-	sig = new Signature(uid, sig);
-	if(sig.valid)
-		return sig;
-	else {
-		return -1;
+	if(last.childNodes.length == 1 && last.childNodes[0].tagName == "SUP") {
+		last = last.childNodes[0];
+		if(last.childNodes.length != 1)
+			return -1;
+		last = last.childNodes[0];
+		if(last.tagName != "SUP")
+			return -1;
+		if(last.childNodes.length != 1)
+			return -1;
+		last = last.childNodes[0];
+		if(last.tagName != "SUP")
+			return -1;
+		if(last.childNodes.length != 1)
+			return -1;
+		last = last.childNodes[0];
+		if(last.tagName != "SUP")
+			return -1;
+		if(last.childNodes.length != 1)
+			return -1;
+		last = last.childNodes[0];
+		if(last.tagName != "SUP")
+			return -1;
+		var sig = last.innerHTML;
+		if(sig.length > 2000)
+			return -1;
+		sig = new Signature(uid, sig);
+		if(sig.valid)
+			return sig;
+		else {
+			return -1;
+		}
+	} else {
+		last = last.childNodes[last.childNodes.length - 1];
+		if(last.tagName != "A")
+			return -1;
+		var sig = last.getAttribute("href");
+		sig = sig.substr(1, sig.length);
+		sig = new Signature(uid, sig);
+		if(sig.valid)
+			return sig;
+		else {
+			return -1;
+		}
 	}
 }
 
@@ -3493,8 +3503,9 @@ function verify_sig(sig, message)
 			verified = key.verify(b64tohex(sig.sig), hex_sha512(message));
 			if(verified)
 				output("Successfully verified signature of type " + keytypenames[sig.type] + "\n");
-			else
+			else {
 				output("Failed to verify signature of type " + keytypenames[sig.type] + "\nMessage Digest: " + hex_sha512(message) + "\nSignature: " + b64tohex(sig.sig) + "\n");
+			}
 			break;
 		default:
 			output("Failed to verify signature of unknown type " + sig.type + "\nMessage Digest: " + hex_sha512(message) + "\nSignature: " + b64tohex(sig.sig) + "\n");
@@ -3534,7 +3545,7 @@ function sign_with_key(text, key, name, type)
 		case "2":
 			return "\n\nSigned with [ReddiTrust 1.0c](https://github.com/MayaFeyIntensifies/ReddiTrust/releases/tag/vA1.0c), using " + keytypenames[type] + "\\SHA-512[.](#" + sig + ")";
 		case "3":
-			return "[](#" + sig + ")";
+			return "\n\n[](#" + sig + ")";
 	}
 }
 
@@ -3574,16 +3585,16 @@ function sign(fid)
 			var start = ht.length;
 			var suc = 0;
 			while(start-- > 0) {
-				if(ht.charAt(start) == '^')
+				if(ht.charAt(start) == '\n')
 					suc++;
 				else {
 					suc = 0;
 				}
-				if(suc == 5) {
+				if(suc == 2) {
 					break;
 				}
 			}
-			md.value = strip_newlines(ht.substring(0, start));
+			md.value = ht.substring(0, start);
 		}
 	for(var i = 0; i < text.childNodes.length; i++)
 		if(text.childNodes[i].nodeType == 1)
