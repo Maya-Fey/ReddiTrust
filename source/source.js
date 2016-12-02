@@ -2704,7 +2704,7 @@ t.appendChild(t2);
 t = ce("td");
 t2.appendChild(t);
 t.setAttribute("style", "padding: 10px; text-align: center; width: 100%");
-t.innerHTML = 'ReddiTrust version Alpha 1.0c - created by <a href="https://www.reddit.com/user/MayaFey_/">/u/MayaFey_</a>';
+t.innerHTML = 'ReddiTrust version Alpha 1.1 - created by <a href="https://www.reddit.com/user/MayaFey_/">/u/MayaFey_</a>';
 t = document.createElement("div");
 t.setAttribute("style", "box-sizing: border-box; border: 15px solid white; width: 100%");
 out.setAttribute("style", "width: 100%; min-height: 8em");
@@ -3555,11 +3555,11 @@ function sign_with_key(text, key, name, type)
 	switch(sigmethod.value)
 	{
 		case "0":
-			return "\n\nSigned with ReddiTrust Alpha 1.0c, using " + keytypenames[type] + "\\SHA-512[.](#" + sig + ")";
+			return "\n\nSigned with ReddiTrust Alpha 1.1, using " + keytypenames[type] + "\\SHA-512[.](#" + sig + ")";
 		case "1":
 			return "\n\n^^^^^" + sig;
 		case "2":
-			return "\n\nSigned with [ReddiTrust Alpha 1.0c](https://github.com/MayaFeyIntensifies/ReddiTrust/releases/tag/vA1.0c), using " + keytypenames[type] + "\\SHA-512[.](#" + sig + ")";
+			return "\n\nSigned with [ReddiTrust Alpha 1.1](https://github.com/MayaFeyIntensifies/ReddiTrust/releases/tag/vA1.1), using " + keytypenames[type] + "\\SHA-512[.](#" + sig + ")";
 		case "3":
 			return "\n\n[](#" + sig + ")";
 	}

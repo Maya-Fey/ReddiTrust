@@ -1,0 +1,11 @@
+Changelog
+
+Features:
+	- Added 3 new signing schemes, plaintext, plaintext + link, and invisible
+	- Added tooltip for verified messages
+	- Added menu groups
+	- Added more logging
+	- Added update UI button
+
+Bugfix:
+	- Fixed compatibility with RES
