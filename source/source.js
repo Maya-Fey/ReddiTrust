@@ -2700,6 +2700,10 @@ t.appendChild(t2);
 var topp = ce("td");
 t2.appendChild(topp);
 t2 = ce("tr");
+var middle = ce("td");
+t.appendChild(t2);
+t2.appendChild(middle);
+t2 = ce("tr");
 var bottom = ce("td");
 t.appendChild(t2);
 t2.appendChild(bottom);
@@ -2711,7 +2715,7 @@ t.setAttribute("style", "padding: 10px; text-align: center; width: 100%");
 t.innerHTML = 'ReddiTrust version Alpha 1.0c - created by <a href="https://www.reddit.com/user/MayaFey_/">/u/MayaFey_</a>';
 t = document.createElement("div");
 t.setAttribute("style", "box-sizing: border-box; border: 15px solid white; width: 100%");
-out.setAttribute("style", "width: 100%; min-height: 2em");
+out.setAttribute("style", "width: 100%; min-height: 8em");
 
 function output(text)
 {
@@ -3141,102 +3145,123 @@ function exportTrustPublicKey()
 		alert(key);
 }
 
-topp.setAttribute("style", "padding: 5px; font-size: 1.1em");
 
-t = document.createElement("b");
-t.appendChild(document.createTextNode("Overview:"));
+var menuselect = document.createElement("select");
+menuselect.setAttribute("onChange", "updateMenu()");
 
-topp.appendChild(t);
+var menus = [];
+
+function nMLn(name)
+{
+	menuselect.appendChild(noption(menus.length, name));
+	var t = document.createElement("div");
+	t.setAttribute("style", "width: 100%; text-align: center; padding: 5px;");
+	menus.push(t);
+	return t;
+}
+
+function updateMenu()
+{
+	if(middle.childNodes.length > 0)
+		middle.removeChild(middle.childNodes[middle.childNodes.length - 1]);
+	middle.appendChild(menus[menuselect.value]);
+}
+
 topp.appendChild(gbreak());
 topp.appendChild(toggleout);
+topp.appendChild(gbreak());
+topp.appendChild(menuselect);
+topp.setAttribute("style", "text-align: center; padding: 5px;")
 
-topp.appendChild(glbreak());
+var cur = nMLn("Generate Keys");
 
 t = document.createElement("b");
 t.appendChild(document.createTextNode("Generate Keys:"));
-topp.appendChild(t);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+cur.appendChild(gbreak());
 
 t = document.createElement("select");
 for(var i = 0; i < keytypenames.length; i++)
 	t.appendChild(noption(i, keytypenames[i]));
-topp.appendChild(keytype = t);
-topp.appendChild(gbreak());
+cur.appendChild(keytype = t);
+cur.appendChild(gbreak());
 
 t = document.createElement("button");
 t.innerHTML = "Collect Entropy";
 t.setAttribute("onclick", "getEntropy('To increase the security of your keys, enter totally random text here. Keyboard mashing, whatever.')");
-topp.appendChild(t);
-topp.appendChild(gbreak());
-topp.appendChild(bitcounter);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+cur.appendChild(gbreak());
+cur.appendChild(bitcounter);
+cur.appendChild(gbreak());
 
 t = document.createElement("button");
 t.innerHTML = "Generate Key";
 t.setAttribute("onclick", "newKey()");
-topp.appendChild(t);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+cur.appendChild(gbreak());
 
-t = document.createElement("button");
-t.innerHTML = "Import Key";
-t.setAttribute("onclick", "importKey()");
-topp.appendChild(t);
+var cur = nMLn("Manage Keys");
 
-topp.appendChild(glbreak());
 t = document.createElement("b");
 t.appendChild(document.createTextNode("Manage Keys:"));
-
-topp.appendChild(t);
-topp.appendChild(gbreak());
-topp.appendChild(keyselect);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+cur.appendChild(gbreak());
+cur.appendChild(keyselect);
+cur.appendChild(gbreak());
 t = document.createElement("button");
 t.innerHTML = "Remove";
 t.setAttribute("onclick", "removeKeyButton()");
-topp.appendChild(t);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+cur.appendChild(gbreak());
+t = document.createElement("button");
+t.innerHTML = "Import Key";
+t.setAttribute("onclick", "importKey()");
+cur.appendChild(t);
+cur.appendChild(gbreak());
 t = document.createElement("button");
 t.innerHTML = "Export";
 t.setAttribute("onclick", "exportPublicKey()");
-topp.appendChild(t);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+cur.appendChild(gbreak());
 t = document.createElement("button");
 t.innerHTML = "Export Private";
 t.setAttribute("onclick", "exportFullKey()");
-topp.appendChild(t);
+cur.appendChild(t);
 
-topp.appendChild(glbreak());
+var cur = nMLn("Manage Trust");
+
 t = document.createElement("b");
 t.appendChild(document.createTextNode("Manage Trust:"));
-topp.appendChild(t);
-topp.appendChild(gbreak());
-topp.appendChild(pubkeyselect);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+cur.appendChild(gbreak());
+cur.appendChild(pubkeyselect);
+cur.appendChild(gbreak());
 t = document.createElement("button");
 t.innerHTML = "Remove";
 t.setAttribute("onclick", "removePKeyButton()");
-topp.appendChild(t);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+cur.appendChild(gbreak());
 t = document.createElement("button");
 t.innerHTML = "Import";
 t.setAttribute("onclick", "importPKey()");
-topp.appendChild(t);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+cur.appendChild(gbreak());
 t = document.createElement("button");
 t.innerHTML = "Export";
 t.setAttribute("onclick", "exportTrustPublicKey()");
-topp.appendChild(t);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+cur.appendChild(gbreak());
 t = document.createElement("button");
 t.innerHTML = "Import Many";
 t.setAttribute("onclick", "importManyPub()");
-topp.appendChild(t);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+cur.appendChild(gbreak());
 t = document.createElement("button");
 t.innerHTML = "Export Many";
 t.setAttribute("onclick", "exportManyPub()");
-topp.appendChild(t);
-topp.appendChild(gbreak());
+cur.appendChild(t);
+
+updateMenu();
 
 function Signature(username, sig)
 {
@@ -3353,7 +3378,7 @@ function updateVerify()
 			{
 				case true:
 					span.setAttribute("style", "border: 1px solid white; background-color: green; padding: 2px; color: white;");
-					span.setAttribute("title", "Verified using " + keytypenames[sig.type] + ":SHA-512")
+					span.setAttribute("title", "Verified using " + keytypenames[sig.type] + ":SHA-512");
 					span.innerHTML = "[VERIFIED]";
 					extra.innerHTML = "";
 					break;
