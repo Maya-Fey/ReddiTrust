@@ -3259,11 +3259,22 @@ cur.appendChild(t);
 
 cur = nMLn("Settings");
 
+function saveMethod()
+{
+	localStorage.setItem("redditrust_SigMethod", sigmethod.value);
+}
+
 var sigmethod = document.createElement("select");
 sigmethod.appendChild(noption(0, "Standard"));
 sigmethod.appendChild(noption(1, "Superscript (obnoxious, fails on mobile)"));
 sigmethod.appendChild(noption(2, "Linked (may be considered spam)"));
 sigmethod.appendChild(noption(3, "Invisible (fails on mobile)"));
+
+sigmethod.setAttribute("onChange", "saveMethod()");
+
+sigmethod.value = localStorage.getItem("redditrust_SigMethod");
+if(sigmethod.value == undefined || sigmethod.value == "")
+	sigmethod.value = "0";
 
 t = document.createElement("b");
 t.appendChild(document.createTextNode("Settings:"));
@@ -3539,11 +3550,11 @@ function sign_with_key(text, key, name, type)
 	switch(sigmethod.value)
 	{
 		case "0":
-			return "\n\nSigned with ReddiTrust 1.0c, using " + keytypenames[type] + "\\SHA-512[.](#" + sig + ")";
+			return "\n\nSigned with ReddiTrust Alpha 1.0c, using " + keytypenames[type] + "\\SHA-512[.](#" + sig + ")";
 		case "1":
 			return "\n\n^^^^^" + sig;
 		case "2":
-			return "\n\nSigned with [ReddiTrust 1.0c](https://github.com/MayaFeyIntensifies/ReddiTrust/releases/tag/vA1.0c), using " + keytypenames[type] + "\\SHA-512[.](#" + sig + ")";
+			return "\n\nSigned with [ReddiTrust Alpha 1.0c](https://github.com/MayaFeyIntensifies/ReddiTrust/releases/tag/vA1.0c), using " + keytypenames[type] + "\\SHA-512[.](#" + sig + ")";
 		case "3":
 			return "\n\n[](#" + sig + ")";
 	}
