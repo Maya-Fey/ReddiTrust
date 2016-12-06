@@ -2899,7 +2899,7 @@ function getPKeyKey(index)
 
 function removePKey(key)
 {
-	var index = getKeyIndex(key);
+	var index = getPKeyIndex(key);
 	pkeykeys.splice(index, 1);
 	pkeytypes.splice(index, 1);
 	pkeyvalues.splice(index, 1);
