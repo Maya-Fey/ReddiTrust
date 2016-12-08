@@ -2939,14 +2939,15 @@ function importManyPub()
 	str = str.split("%==%");
 	for(var i = 0; i < str.length; i++)
 		importPKeyInt(str[i]);
+	updatePKeySelect();
 }
 
 function exportManyPub()
 {
 	var str = "";
-	if(keykeys.length > 0)
+	if(pkeykeys.length > 0)
 		str = exportPKeyInt(0);
-	for(var i = 1; i < keykeys.length; i++) {
+	for(var i = 1; i < pkeykeys.length; i++) {
 		var key = exportPKeyInt(i);
 		if(key != -1)
 			str += "%==%" + key;
