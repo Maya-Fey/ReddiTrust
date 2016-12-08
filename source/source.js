@@ -2959,7 +2959,8 @@ function exportManyPub()
 			str += "%==%" + key;
 	}
 	output("Exported all possible keys:\n" + str + "\n");
-	alert("Full output printed to ReddiTrust console");
+	pout.setAttribute("style", "width: 20%; background-color: #0F0");
+	pout.value = str;
 }
 
 function exportPKeyInt(index)
@@ -3141,8 +3142,10 @@ function importPKey()
 function exportTrustPublicKey()
 {
 	var key = exportPKeyPublic(pkeykeys[pubkeyselect.value]);
-	if(key != -1)
-		alert(key);
+	if(key != -1) {
+		pout.setAttribute("style", "width: 20%; background-color: #0F0");
+		pout.value = key;
+	}
 }
 
 
@@ -3272,6 +3275,10 @@ t = document.createElement("button");
 t.innerHTML = "Export Many";
 t.setAttribute("onclick", "exportManyPub()");
 cur.appendChild(t);
+cur.appendChild(gbreak());
+pout.setAttribute("style", "width: 20%");
+pout.setAttribute("onclick", "this.setAttribute('style', 'width: 20%')");
+cur.appendChild(pout);
 
 cur = nMLn("Settings");
 
