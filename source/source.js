@@ -2498,6 +2498,8 @@ function loadKeyDB()
 		parseKeyFull(str[i], null, false);
 }
 
+var kout = document.createElement("input");
+var pout = document.createElement("input");
 var out = document.createElement("textarea");
 var VERS = 1;
 
@@ -2848,16 +2850,20 @@ function exportFullKey()
 {
 	if(confirm("Are you sure you want to do this?\nExporting your full key includes your secret key, which could be used by others to forge messages that look like they have been sent by you.\nOnly do this for backup or other storage purposes.")) {
 		var key = exportKeyFull(keykeys[keyselect.value]);
-		if(key != -1)
-			alert(key);
+		if(key != -1) {
+			kout.setAttribute("style", "width: 20%; background-color: #0F0");
+			kout.value = key;
+		}
 	}
 }
 
 function exportPublicKey()
 {
 	var key = exportKeyPublic(keykeys[keyselect.value]);
-	if(key != -1)
-		alert(key);
+	if(key != -1) {
+		kout.setAttribute("style", "width: 20%; background-color: #0F0");
+		kout.value = key;
+	}
 }
 
 var pubkeyselect = document.createElement("select");
@@ -3228,6 +3234,10 @@ t = document.createElement("button");
 t.innerHTML = "Export Private";
 t.setAttribute("onclick", "exportFullKey()");
 cur.appendChild(t);
+cur.appendChild(gbreak());
+kout.setAttribute("style", "width: 20%");
+kout.setAttribute("onclick", "this.setAttribute('style', 'width: 20%')");
+cur.appendChild(kout);
 
 cur = nMLn("Manage Trust");
 
