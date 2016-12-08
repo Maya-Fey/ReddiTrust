@@ -1,0 +1,5 @@
+Changelog
+
+Bugfix:
+	- Import and Export Many public key commands now work as intended
+	- Remove public key command now deletes the key selected
