@@ -3418,14 +3418,18 @@ function updateVerify()
 			span.innerHTML = " (Unverified) ";
 			span.setAttribute("style", "");
 		} else {
-			comment.setAttribute("__redditrust_signature", sig.getText());
+			
 			md.setAttribute("__redditrust_has_signature", "true");
-			md.removeChild(md.childNodes[md.childNodes.length - 1]);
-			md.removeChild(md.childNodes[md.childNodes.length - 1]);
-			md.innerHTML = strip_newlines(md.innerHTML);
-			for(var j = 0; j < md.childNodes.length; j++)
-				if(md.childNodes[j].nodeType == 1)
-					removeAttributes(md.childNodes[j]);
+			if(!comment.hasAttribute("__redditrust_signature")) {
+				md.removeChild(md.childNodes[md.childNodes.length - 1]);
+				md.removeChild(md.childNodes[md.childNodes.length - 1]);
+				md.innerHTML = strip_newlines(md.innerHTML);
+				for(var j = 0; j < md.childNodes.length; j++)
+					if(md.childNodes[j].nodeType == 1)
+						removeAttributes(md.childNodes[j]);
+				comment.setAttribute("__redditrust_signature", sig.getText());
+			}	
+			
 			var verify = verify_sig(sig, root.getAttribute("data-fullname") + md.innerHTML);
 			md.parentNode.setAttribute("style", "");
 			var extra = md.nextSibling;
@@ -3471,7 +3475,7 @@ function updateVerify()
 			authortag.innerHTML = "Maya Fey";
 		}
 		if(verified || sig == -1)
-			comment.setAttribute("__redditrust_processed", "true")
+			comment.setAttribute("__redditrust_processed", "true");
 	}
 }
 
