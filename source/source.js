@@ -3334,7 +3334,7 @@ function Signature(username, sig)
 
 Signature.prototype.getText = function() {
 	return this.vers + "%%" + this.type + "%%" + this.fullname.split(":")[1] + "%%" + this.sig;
-}
+};
 
 function updateEdits()
 {
@@ -3390,10 +3390,12 @@ function updateVerify()
 	for(var i = 0; i < comments.length; i++)
 	{
 		var comment = comments[i];
-		if(comment.getAttribute("__redditrust_processed") == "true" || !comment.parentNode.parentNode.classList.contains("entry"))
+		if(comment.getAttribute("__redditrust_processed") == "true" || (!comment.parentNode.parentNode.classList.contains("entry") && !comment.parentNode.parentNode.classList.contains("expando")))
 			continue;
 		
 		var root = comment.parentNode.parentNode.parentNode;
+		if(root.classList.contains("entry"))
+			root = root.parentNode;
 		var author = root.getAttribute("data-author");
 		var md = comment.childNodes[0];
 		if(comment.hasAttribute("__redditrust_signature"))
@@ -3401,7 +3403,7 @@ function updateVerify()
 		else {
 			var sig = getSignature(md, author);
 		}
-		var tagline = root.getElementsByClassName("entry")[0].childNodes[0];
+		var tagline = root.getElementsByClassName("entry")[0].getElementsByClassName("tagline")[0];
 		var authortag = tagline.getElementsByClassName("author")[0];
 		if(authortag == null) {
 			comment.setAttribute("__redditrust_processed", "true");
@@ -3441,7 +3443,7 @@ function updateVerify()
 			switch(verify)
 			{
 				case true:
-				verified = true;
+					verified = true;
 					span.setAttribute("style", "border: 1px solid white; background-color: green; padding: 2px; color: white;");
 					span.setAttribute("title", "Verified using " + keytypenames[sig.type] + ":SHA-512");
 					span.innerHTML = "[VERIFIED]";
@@ -3624,6 +3626,8 @@ function sign(fid)
 {
 	var form = document.getElementById(fid);
 	var author = form.parentNode.parentNode.getAttribute("data-author");
+	if(author == null)
+		var author = form.parentNode.parentNode.parentNode.getAttribute("data-author");
 	var text = form.getElementsByClassName("usertext-body")[0].childNodes[0];
 	var md = form.getElementsByClassName("usertext-edit")[0].getElementsByClassName("md")[0].getElementsByTagName("textarea")[0];
 	md.value = strip_newlines(md.value);
@@ -3657,7 +3661,10 @@ function sign(fid)
 	}
 	var key = getKeyKey(kind);
 	var type = getKeyType(kind);
-	sig = sign_with_key(hex_sha512(form.parentNode.parentNode.getAttribute("data-fullname") + text), key, keykeys[keyselect.value], type);
+	var dname = form.parentNode.parentNode.getAttribute("data-fullname");
+	if(dname == null)
+		dname = form.parentNode.parentNode.parentNode.getAttribute("data-fullname");
+	sig = sign_with_key(hex_sha512(dname + text), key, keykeys[keyselect.value], type);
 	if(sig != -1) {
 		md.value += sig;
 		form.onsubmit();
