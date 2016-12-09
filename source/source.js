@@ -3332,6 +3332,10 @@ function Signature(username, sig)
 	this.valid = true;
 }
 
+Signature.prototype.getText = function() {
+	return this.vers + "%%" + this.type + "%%" + this.fullname.split(":")[1] + "%%" + this.sig;
+}
+
 function updateEdits()
 {
 	var edits = document.getElementsByClassName("edit-usertext");
@@ -3392,7 +3396,11 @@ function updateVerify()
 		var root = comment.parentNode.parentNode.parentNode;
 		var author = root.getAttribute("data-author");
 		var md = comment.childNodes[0];
-		var sig = getSignature(md, author);
+		if(comment.hasAttribute("__redditrust_signature"))
+			var sig = new Signature(author, comment.getAttribute("__redditrust_signature"));
+		else {
+			var sig = getSignature(md, author);
+		}
 		var tagline = root.getElementsByClassName("entry")[0].childNodes[0];
 		var authortag = tagline.getElementsByClassName("author")[0];
 		if(authortag == null) {
@@ -3405,10 +3413,12 @@ function updateVerify()
 			span.setAttribute("name", "__redditrust_verispan");
 			authortag.insertAdjacentElement("afterEnd", span);
 		}
+		var verified = false;
 		if(sig == -1) {
 			span.innerHTML = " (Unverified) ";
 			span.setAttribute("style", "");
 		} else {
+			comment.setAttribute("__redditrust_signature", sig.getText());
 			md.setAttribute("__redditrust_has_signature", "true");
 			md.removeChild(md.childNodes[md.childNodes.length - 1]);
 			md.removeChild(md.childNodes[md.childNodes.length - 1]);
@@ -3427,6 +3437,7 @@ function updateVerify()
 			switch(verify)
 			{
 				case true:
+				verified = true;
 					span.setAttribute("style", "border: 1px solid white; background-color: green; padding: 2px; color: white;");
 					span.setAttribute("title", "Verified using " + keytypenames[sig.type] + ":SHA-512");
 					span.innerHTML = "[VERIFIED]";
@@ -3459,7 +3470,8 @@ function updateVerify()
 			authortag.setAttribute("style", "color: rgb(158, 98, 183)");
 			authortag.innerHTML = "Maya Fey";
 		}
-		comment.setAttribute("__redditrust_processed", "true")
+		if(verified || sig == -1)
+			comment.setAttribute("__redditrust_processed", "true")
 	}
 }
 
