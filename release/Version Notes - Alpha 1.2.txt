@@ -1,0 +1,8 @@
+Changelog
+
+Behavior:
+	- Unverified signatures now can be reverified with new keys
+
+Features:
+	- Added self-post sign/verify capability
+	- Added output text boxes for key exporting
