@@ -1,18 +1,7 @@
-**THIS APPLICATION IS IN ALPHA. THERE ARE MOST LIKELY BUGS IN THE PROGRAM. USE AT YOUR OWN RISK**
+**This application is no longer in development**
 
-**FURTHERMORE, THIS BOOKMARKLET HAS KNOWN SECURITY VULNERABILITIES INVOLVING YOUR BROWSER'S HTML LOCAL STORAGE, IT IS THEORETICALLY POSSIBLE THAT THE REDDIT SERVERS CAN REQUEST THE DATA IN YOUR LOCAL STORAGE (AND THUS YOUR PRIVATE KEYS). THIS PROBLEM WILL BE RESOLVED BUT AS OF NOW HAS NOT BEEN. DO NOT RELY ON THIS PLUGIN FOR ANY HIGH-STAKES PURPOSE**
+ReddiTrust was made back during the /u/spez drama when they edited a few comments. The idea of this application was to verify comments using public-key cryptography. 
 
----
+An initial prototype was developed as a javascript bookmarklet which allowed for signing and verifying both comments and text posts. However, due to lack of interest, a final version of the application as a browser plugin was not developed.
 
-ReddiTrust is a javascript bookmarklet designed to allow reddit users to verify whether comments posted under an account name are genuinely from the account owner. This protects against identity theft and comment shadow-editing from administrators.
-
----
-
-To install, simply copy the application code from the releases section and then create a new bookmark with the code as the URL.
-
----
-
-Compatibility:
-
-Minor testing with both Google Chrome and Mozilla Firefox. If you aren't using one of these two browsers then what are you doing on the internet.
-
+The bookmarklet doesn't have any security vulnerabilities with respect to signing, however requiring manual input of keys or using local storage is obviously not practical or secure. This application page is left up mainly for posterity, it should never be used for any purpose.
